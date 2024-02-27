@@ -1,0 +1,13 @@
+.footer-container {
+  display: flex;
+  align-items: center;
+}
+.logo-footer__container {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.copyright-footer {
+  margin-left: 40px;
+  font-weight: 700;
+}

@@ -1,0 +1,21 @@
+.intro__heading--bolder {
+  font-weight: 700;
+  font-size: 40px;
+}
+.intro__content {
+  margin-top: 60px;
+}
+.intro-content__row {
+  display: flex;
+}
+.intro-content__col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.intro-content__item {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+}

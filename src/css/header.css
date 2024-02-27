@@ -1,0 +1,32 @@
+.nav-brand__container {
+  display: flex;
+  align-items: center;
+}
+.bank-name {
+  color: var(--primary-color);
+  font-size: 30px;
+  font-weight: 700;
+  display: inline-block;
+  letter-spacing: 1px;
+  padding: 5px 0px;
+}
+.nav__features > a {
+  color: black;
+  font-weight: 500;
+}
+.nav__features > a:hover {
+  opacity: 0.6;
+}
+.nav__features--login > a {
+  color: white;
+  background-color: var(--primary-color);
+  border-radius: 20px;
+  padding: 8px 20px !important;
+  border: 1px solid var(--primary-color);
+}
+.nav__features--login > a:hover {
+  background-color: transparent;
+  font-weight: 500;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
