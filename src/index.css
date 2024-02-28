@@ -1,3 +1,20 @@
 :root {
   --primary-color: blue;
 }
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+.primary-background {
+  background-color: var(--primary-color);
+}
+.primary-color {
+  color: var(--primary-color);
+}
+.white-text {
+  color: white;
+}
+.primary-text {
+  color: var(--primary-color);
+  font-weight: 700;
+}

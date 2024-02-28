@@ -73,35 +73,6 @@ function Service() {
     </div>
   ));
   return <>{serviceItems}</>;
-  // <div className="intro__content" style={{ backgroundColor: 'red' }}>
-  //   <Container>
-  //     <Row className="intro-content__row">
-  //       <Col md={6} sm={12} style={{ order: 2 }}>
-  //         <img
-  //           style={{ width: '70%', height: '100%' }}
-  //           alt={serviceImg}
-  //           src={serviceImg}
-  //         />
-  //       </Col>
-  //       <Col
-  //         md={6}
-  //         sm={12}
-  //         style={{ order: 1 }}
-  //         className="intro-content__col"
-  //       >
-  //         <div className="intro-content__item">
-  //           <h3>AURORA ONE digital banking service</h3>
-  //           <p>
-  //             Open an account in 1 minute - Receive incentives all year long
-  //           </p>
-  //           <Button variant="primary" size="lg">
-  //             See more!
-  //           </Button>
-  //         </div>
-  //       </Col>
-  //     </Row>
-  //   </Container>
-  // </div>
 }
 
 export default Service;

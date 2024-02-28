@@ -1,16 +1,20 @@
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Intro from './components/Intro';
-
+import Home from './components/Home';
+import NotFound from './components/NotFound';
+import Login from './components/Login';
+import Account from './components/Account';
+import QrCode from './components/QrCode';
+import Transfer from './components/Transfer';
+import { Routes, Route } from 'react-router-dom';
 function App() {
   return (
-    <>
-      <Header />
-      <Hero />
-      <Intro />
-      <Footer />
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="*" element={<NotFound />} />
+      <Route path="/account" element={<Account />} />
+      <Route path="/qrpay" element={<QrCode />} />
+      <Route path="/transfer" element={<Transfer />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
   );
 }
 
