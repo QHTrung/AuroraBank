@@ -2,6 +2,7 @@ import { Container, Navbar } from 'react-bootstrap';
 import qrcodeImg from '../image/qrcode.png';
 import { Link } from 'react-router-dom';
 export default function QrCode() {
+  const user = JSON.parse(localStorage.getItem('user'));
   return (
     <Container className="my-5 w-50 text-break">
       <h2 className="text-center">Qr code to transfer</h2>
@@ -19,8 +20,8 @@ export default function QrCode() {
         />
       </div>
       <div className="user-info text-center">
-        <p className="username primary-color">QUACH HAI TRUNG</p>
-        <p className="account-number primary-text">123456789021</p>
+        <p className="username primary-color">{user.email}</p>
+        <p className="account-number primary-text">{user.uid}</p>
         <p className="bank-branch">Aurorabank - Tan Phu Branch</p>
       </div>
       <div className="back text-center">

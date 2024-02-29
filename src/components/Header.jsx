@@ -1,9 +1,23 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import Dropdown from 'react-bootstrap/Dropdown';
+import NavItem from 'react-bootstrap/NavItem';
+import NavLink from 'react-bootstrap/NavLink';
 import '../css/header.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+
 function Header() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await signOut(auth);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
   return (
     <Navbar
       sticky="top"
@@ -23,9 +37,18 @@ function Header() {
             <Link to="/qrpay">QR pay</Link>
             <Link to="/transfer">Transfer</Link>
           </Nav>
-          <Nav className="nav__features--login">
-            <Link to="/login">Login</Link>
-          </Nav>
+          {user ? (
+            <Dropdown as={NavItem}>
+              <Dropdown.Toggle as={NavLink}>{user.email}</Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          ) : (
+            <Nav className="nav__features--login">
+              <Link to="/login">Login</Link>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

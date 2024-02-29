@@ -4,17 +4,16 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
-
-function Login() {
+export default function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password,
@@ -23,7 +22,7 @@ function Login() {
       console.log('User', user);
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      navigate('/');
+      navigate('/login');
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -38,7 +37,7 @@ function Login() {
           <span className="bank-name"> Aurora Bank</span>
         </Navbar.Brand>
       </div>
-      <h2 className="text-center">Login</h2>
+      <h2 className="text-center">Sign Up</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -63,16 +62,14 @@ function Login() {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          Login
+          Sign Up
         </Button>
       </Form>
       <div className="my-2 text-break">
         <p>
-          Need to Sign Up? <Link to="/signup">Create account</Link>
+          Need to Login? <Link to="/login">Login</Link>
         </p>
       </div>
     </Container>
   );
 }
-
-export default Login;
