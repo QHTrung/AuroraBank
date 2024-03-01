@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import toast from 'react-hot-toast';
 export default function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -22,11 +23,14 @@ export default function SignUp() {
       console.log('User', user);
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
+      toast.success('Sign up successfully !!!', {
+        duration: 5000,
+      });
       navigate('/login');
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+      toast.error(errorCode, errorMessage);
     }
   };
   return (

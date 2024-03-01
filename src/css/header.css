@@ -33,3 +33,14 @@
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
 }
+@media screen and (max-width: 992px) {
+  .nav__features > a {
+    margin-left: 0;
+  }
+  .nav__features--login > a {
+    background-color: transparent;
+    color: black;
+    border: none;
+    padding: 0 !important;
+  }
+}
