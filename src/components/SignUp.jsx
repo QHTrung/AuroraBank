@@ -5,12 +5,16 @@ import Form from 'react-bootstrap/Form';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
 import { auth } from '../firebase';
 import toast from 'react-hot-toast';
+const MIN_MONEY = 50000;
 export default function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const db = getDatabase();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -23,6 +27,17 @@ export default function SignUp() {
       console.log('User', user);
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
+      set(ref(db, 'users/' + user.uid), {
+        email: user.email,
+        userId: user.uid,
+        balance: MIN_MONEY,
+      })
+        .then(() => {
+          console.log('Create database successfully!');
+        })
+        .catch(() => {
+          console.log('Create database fail!');
+        });
       toast.success('Sign up successfully !!!', {
         duration: 5000,
       });

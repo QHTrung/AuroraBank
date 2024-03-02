@@ -15,11 +15,14 @@ const firebaseConfig = {
   messagingSenderId: '961914344332',
   appId: '1:961914344332:web:f3f830f9ffb7adcc65bca9',
   measurementId: 'G-ST90KY8GZK',
+  databaseURL:
+    'https://fir-aurorabank-auth-default-rtdb.asia-southeast1.firebasedatabase.app/',
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 //const analytics = getAnalytics(app);
+// Initialize Realtime Database and get a reference to the service
 
 export const auth = getAuth(app);
 export default app;
