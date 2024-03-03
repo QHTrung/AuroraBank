@@ -24,7 +24,6 @@ export default function SignUp() {
         password,
       );
       const user = userCredential.user;
-      console.log('User', user);
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
       set(ref(db, 'users/' + user.uid), {
@@ -68,7 +67,6 @@ export default function SignUp() {
             required
           />
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -79,7 +77,6 @@ export default function SignUp() {
             required
           />
         </Form.Group>
-
         <Button variant="primary" type="submit">
           Sign Up
         </Button>

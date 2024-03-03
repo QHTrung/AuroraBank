@@ -21,7 +21,6 @@ export default function Transfer() {
   const [amount, setAmount] = useState(0);
   const [emailRecipient, setEmailRecipient] = useState('');
   const [balance, setBalance] = useState(0);
-  let receiverId = '';
   const db = getDatabase();
   // Get current userId
   const auth = getAuth();
@@ -123,7 +122,6 @@ export default function Transfer() {
       </div>
       <h2 className="text-center">Transfer by account</h2>
       <h3>Current balance: {balance}</h3>
-      <h3>Receiver ID: {receiverId}</h3>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -135,7 +133,6 @@ export default function Transfer() {
             required
           />
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Amount</Form.Label>
           <Form.Control

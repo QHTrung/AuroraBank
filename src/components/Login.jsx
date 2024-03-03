@@ -21,7 +21,6 @@ function Login() {
         password,
       );
       const user = userCredential.user;
-      console.log('User', user);
       localStorage.setItem('token', user.accessToken);
       localStorage.setItem('user', JSON.stringify(user));
       toast.success('Login successfully!!!', {
