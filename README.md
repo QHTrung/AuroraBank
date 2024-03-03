@@ -11,4 +11,4 @@ This is an assignment about a bank website with functions such as:
 
 Technologies used: ReactJS, Bootstrap5, Firebase
 
-Link demo: [https://aurora-bank.vercel.app/]()
+Link demo: [Aurorabank](https://aurora-bank.vercel.app/)
