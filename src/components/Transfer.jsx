@@ -1,48 +1,116 @@
-import { useState, useEffect } from 'react';
+import { getAuth } from 'firebase/auth';
+import {
+  equalTo,
+  get,
+  getDatabase,
+  onValue,
+  orderByChild,
+  query,
+  ref,
+  set,
+  update,
+} from 'firebase/database';
+import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Navbar from 'react-bootstrap/Navbar';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getDatabase, onValue, ref, set } from 'firebase/database';
+import toast from 'react-hot-toast';
 
 export default function Transfer() {
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(0);
   const [emailRecipient, setEmailRecipient] = useState('');
-  const [user, setUser] = useState(null);
-  // get current user
+  const [balance, setBalance] = useState(0);
+  let receiverId = '';
+  const db = getDatabase();
+  // Get current userId
   const auth = getAuth();
+  const userId = auth.currentUser.uid;
+  // Get lastest balance
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      }
-    });
-  }, []);
-
+    const balanceRef = ref(db, 'users/' + userId);
+    onValue(
+      balanceRef,
+      (snapshot) => {
+        const balance = snapshot.val().balance;
+        setBalance(balance);
+      },
+      {
+        onlyOnce: true,
+      },
+    );
+  });
+  // Transfer event
   const handleSubmit = (e) => {
-    const db = getDatabase();
     e.preventDefault();
-    // send transaction
-    set(ref(db, 'transaction'), {
-      amount,
-      emailRecipient,
-      senderEmail: user.email,
-      senderId: user.uid,
-    })
-      .then(() => {
-        console.log('tao db thanh cong!');
-      })
-      .catch(() => {
-        console.log('tao db that bai!');
+    if (amount < 0 || amount > balance) {
+      toast('The amount is not enough to proceed with the transaction', {
+        icon: '⚠️',
+        duration: 5000,
       });
-    // Update balance
-    const userRef = ref(db, 'users/' + user.uid + '/balance');
-    onValue(userRef, (snapshot) => {
-      const data = snapshot.val();
-      console.log('Data', data);
-    });
-    alert('Gửi tiền thành công');
+      return;
+    } else {
+      // Send and save transaction db
+      set(ref(db, 'transaction/' + userId), {
+        amount,
+        emailRecipient,
+        senderEmail: auth.currentUser.email,
+        senderId: auth.currentUser.uid,
+      })
+        .then(() => {
+          console.log('Create database successfully!');
+        })
+        .catch(() => {
+          console.log('Create database fail!');
+        });
+      // Update sender's balance
+      const userRef = ref(db, 'users/' + userId);
+      onValue(
+        userRef,
+        (snapshot) => {
+          let newBalance = snapshot.val().balance - amount;
+          update(userRef, { balance: newBalance })
+            .then(() => {
+              console.log('Update successfully!');
+              setBalance(newBalance);
+            })
+            .catch(() => {
+              console.log('Update fail!');
+            });
+        },
+        {
+          onlyOnce: true,
+        },
+      );
+      // Update receiver's balance
+      const receiverRef = ref(db, 'users');
+      const querySnapshot = query(
+        receiverRef,
+        orderByChild('email'),
+        equalTo(emailRecipient),
+      );
+      get(querySnapshot)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            snapshot.forEach((childsnap) => {
+              let recBalance =
+                Number.parseFloat(childsnap.val().balance) +
+                Number.parseFloat(amount);
+              update(ref(db, 'users/' + childsnap.val().userId), {
+                balance: recBalance,
+              });
+            });
+          } else {
+            console.log('Not exist!');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      toast.success('Send money successfully!!');
+    }
+    setAmount(0);
+    setEmailRecipient('');
   };
 
   return (
@@ -54,6 +122,8 @@ export default function Transfer() {
         </Navbar.Brand>
       </div>
       <h2 className="text-center">Transfer by account</h2>
+      <h3>Current balance: {balance}</h3>
+      <h3>Receiver ID: {receiverId}</h3>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
